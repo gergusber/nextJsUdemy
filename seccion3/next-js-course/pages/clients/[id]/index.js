@@ -13,10 +13,10 @@ const ClientProjectsPage = () => {
     // router.push('/clients/ger/project a') // we move to another page programatically
     // router.replace('/clients/ger/project a')// we remplace with another page programatically( we cant comeback)
     router.push({
-      pathname:'/clients/[id]/[clientprojectid]',
+      pathname: '/clients/[id]/[clientprojectid]',
       query: {
-        id:'ger',
-        clientprojectid :'project a'
+        id: 'ger',
+        clientprojectid: 'project a'
       }
     })
   }
