@@ -13,18 +13,18 @@ const EventItem = (props) => {
 
   return <li className={classes.item}>
     <img src={'/' + image} height={100} width={100}></img>
-    <div>
-      <div>
+    <div className={classes.content}>
+      <div className={classes.summary}>
         <h2>{title}</h2>
-        <div>
+        <div className={classes.date}>
           <time>Date:{readableDate}</time>
         </div>
-        <div>
+        <div className={classes.address}>
           <address>Address: {formattedAddress}</address>
         </div>
       </div>
 
-      <div>
+      <div className={classes.actions}>
         <Link href={{
           pathname: '/events/[id]',
           query: {
