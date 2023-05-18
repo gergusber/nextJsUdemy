@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import classes from './event-item.module.css'
+import Button from '../layout/button/button';
 
 const EventItem = (props) => {
   const { title, image, date, location, id } = props;
@@ -25,12 +26,13 @@ const EventItem = (props) => {
       </div>
 
       <div className={classes.actions}>
-        <Link href={{
+        {/* <Link href={{
           pathname: '/events/[id]',
           query: {
             id: id
           }
-        }}>Explore</Link>
+        }}>Explore</Link> */}
+        <Button link={`/events/${id}`}>Explore</Button>
       </div>
     </div>
   </li >
