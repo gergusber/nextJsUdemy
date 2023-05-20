@@ -1,7 +1,12 @@
 import data from '../data/dummy-backend.json'
 
 const ProductDetailPage = (props) => {
-  const { title, description } = props.loadedProduct
+  const { loadedProduct } = props
+  if (!loadedProduct) // with fallback true, we can assume that  props.loadedProduct can be null due loading process  unless that fallback is blocking, that is waiting to response.
+    return <p>Loading....</p>
+
+
+  const { title, description } = loadedProduct
   console.log()
   return <>
     <h1>{title}</h1>
@@ -14,15 +19,14 @@ export async function getStaticPaths() {
   // Fetch the dynamic data from your API or any other data source
   const paths = [
     { params: { pid: 'p1' } },
-    { params: { pid: 'p2' } },
-    { params: { pid: 'p3' } },
     // Add more objects here if you have additional dynamic paths
   ];
 
   // The returned paths will be pre-rendered as static HTML at build time
   return {
     paths,
-    fallback: false // Set this to true if you have additional dynamic paths that are not listed here
+    // fallback: true // Set this to true if you have additional dynamic paths that are not listed here
+    fallback: 'blocking' // Set this to true if you have additional dynamic paths that are not listed here
   };
 }
 
