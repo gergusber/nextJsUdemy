@@ -17,14 +17,13 @@ const ProductDetailPage = (props) => {
 // This function is executed at build time and should return an array of possible values for [pid]
 export async function getStaticPaths() {
   // Fetch the dynamic data from your API or any other data source
-  const paths = [
-    { params: { pid: 'p1' } },
-    // Add more objects here if you have additional dynamic paths
-  ];
+  const ids = data.products.map(({ id }) => id);
 
+  const params = ids.map(id => ({ params: { pid: id } })) ; // we construct the object of params with all the pIds dynamic 
+  
   // The returned paths will be pre-rendered as static HTML at build time
   return {
-    paths,
+    paths:params,
     // fallback: true // Set this to true if you have additional dynamic paths that are not listed here
     fallback: 'blocking' // Set this to true if you have additional dynamic paths that are not listed here
   };
