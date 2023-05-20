@@ -19,13 +19,13 @@ export async function getStaticPaths() {
   // Fetch the dynamic data from your API or any other data source
   const ids = data.products.map(({ id }) => id);
 
-  const params = ids.map(id => ({ params: { pid: id } })) ; // we construct the object of params with all the pIds dynamic 
-  
+  const params = ids.map(id => ({ params: { pid: id } })); // we construct the object of params with all the pIds dynamic 
+
   // The returned paths will be pre-rendered as static HTML at build time
   return {
-    paths:params,
-    // fallback: true // Set this to true if you have additional dynamic paths that are not listed here
-    fallback: 'blocking' // Set this to true if you have additional dynamic paths that are not listed here
+    paths: params,
+    fallback: true // Set this to true if you have additional dynamic paths that are not listed here
+    // fallback: 'blocking' // Set this to true if you have additional dynamic paths that are not listed here
   };
 }
 
@@ -36,6 +36,10 @@ export async function getStaticProps(context) {
   const title = 'something'
   const description = 'something description'
   const product = data.products.find(x => x.id === productId);
+
+  if (!product) {
+    return { notFound: true }
+  }
 
   return {
     props: {
