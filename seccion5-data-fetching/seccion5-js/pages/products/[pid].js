@@ -1,4 +1,4 @@
-import data from '../data/dummy-backend.json'
+import data from '../../data/dummy-backend.json'
 
 const ProductDetailPage = (props) => {
   const { loadedProduct } = props
