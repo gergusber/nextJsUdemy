@@ -3,10 +3,10 @@ import useSWR from 'swr'
 const URL_API_FIREBASE = 'url';
 
 const LastSalesPage = (props) => {
-  //useSWR(<request-url>, (url) => fetch(url).then(res => res.json())) if problems
+  const [sales, setSales] = useState(props.sales);
+
   const { data, error } = useSWR(URL_API_FIREBASE, (url) => fetch(url).then(res => res.json())); //seSWR(URL_API_FIREBASE);
- 
-  const [sales, setSales] = useState();
+
 
   useEffect(() => {
     const transformedSaleS = [];
@@ -45,16 +45,16 @@ const LastSalesPage = (props) => {
   //       setIsLoading(false)
   //     });
   // }, [])
+
   if (error)
     return <p> Fail to load...</p>
 
 
-  if (!data)
+  if (!data && !sales )
     return <p> Loading...</p>
 
-  if (!sales)
-    return <p> Loading...</p>
-  else{
+
+  else {
     return (<ul>
       {sales ? sales.map(sale => <li key={sale.id}>
         {sale.username} - ${sale.volume}
@@ -66,5 +66,23 @@ const LastSalesPage = (props) => {
 
 export default LastSalesPage;
 
-// export const getServerSideProps = async (context) => {
-// }
+export const getStaticProps = async (context) => {
+  const transformedSaleS = [];
+  const response = await fetch(URL_API_FIREBASE)
+  const data = await response.json();
+
+  for (const key in data) {
+    transformedSaleS.push({
+      id: key,
+      username: data[key].username,
+      volume: data[key].volume
+    })
+  }
+
+  return {
+    props: {
+      sales: transformedSaleS,
+      revalidate: 10
+    }
+  }
+}
