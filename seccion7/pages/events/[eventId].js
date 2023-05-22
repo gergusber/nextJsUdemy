@@ -1,60 +1,61 @@
-import { Fragment } from 'react';
-
-import { getEventById, getFeaturedEvents } from '../../helpers/api-util';
+import { getEventById, getFeaturedEvents } from '../../helpers/api-utils';
 import EventSummary from '../../components/event-detail/event-summary';
 import EventLogistics from '../../components/event-detail/event-logistics';
 import EventContent from '../../components/event-detail/event-content';
-import ErrorAlert from '../../components/ui/error-alert';
+import ErrorAlert from '../../components/layout/error-alert/error-alert';
+import Button from '../../components/layout/button/button';
 
-function EventDetailPage(props) {
-  const event = props.selectedEvent;
+const EventDetailPage = (props) => {
+  const { event = null } = props;
 
   if (!event) {
-    return (
-      <div className="center">
-        <p>Loading...</p>
+    return <>
+      <div  className='center'>
+        <p> Loading...</p>
+      </div >
+      <div className='center'>
+        <Button link='/events'>Show all events</Button>
       </div>
-    );
+    </>
   }
 
-  return (
-    <Fragment>
-      <EventSummary title={event.title} />
-      <EventLogistics
-        date={event.date}
-        address={event.location}
-        image={event.image}
-        imageAlt={event.title}
-      />
-      <EventContent>
-        <p>{event.description}</p>
-      </EventContent>
-    </Fragment>
-  );
+  return <>
+    <EventSummary title={event.title} />
+    <EventLogistics
+      date={event.date}
+      address={event.location}
+      image={event.image}
+      imageAlt={event.title} />
+    <EventContent >
+      <p>{event.description}</p>
+    </EventContent>
+  </>
 }
 
-export async function getStaticProps(context) {
-  const eventId = context.params.eventId;
+export const getStaticPaths = async (context) => {
+  const events = await getFeaturedEvents();
+  const paths = events.map(event => ({ params: { eventId: event.id } })); // we construct the object of params with all the pIds dynamic 
 
-  const event = await getEventById(eventId);
+  // The returned paths will be pre-rendered as static HTML at build time
+  return {
+    paths,
+    fallback: 'blocking'// Set this to true if you have additional dynamic paths that are not listed here
+  };
+}
+
+export const getStaticProps = async (context) => {
+  const { eventId } = context.params;
+
+  const event = await getEventById(eventId)
 
   return {
     props: {
-      selectedEvent: event
+      event
     },
-    revalidate: 30
-  };
+    revalidate: 30, 
+  }
 }
 
-export async function getStaticPaths() {
-  const events = await getFeaturedEvents();
 
-  const paths = events.map(event => ({ params: { eventId: event.id } }));
-
-  return {
-    paths: paths,
-    fallback: 'blocking'
-  };
-}
 
 export default EventDetailPage;

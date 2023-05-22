@@ -1,12 +1,14 @@
-import { Fragment, useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import useSWR from 'swr';
+import { getFilteredEvents } from '../../helpers/api-utils';
+import { useRouter } from 'next/router'
+import useSWR from 'swr'
+import { useEffect, useState } from 'react'
+import EventList from '../../components/events/event-list'
+import ResultsTitle from '../../components/events/results-title/results-title';
+import Button from '../../components/layout/button/button';
+import ErrorAlert from '../../components/layout/error-alert/error-alert';
 
-import { getFilteredEvents } from '../../helpers/api-util';
-import EventList from '../../components/events/event-list';
-import ResultsTitle from '../../components/events/results-title';
-import Button from '../../components/ui/button';
-import ErrorAlert from '../../components/ui/error-alert';
+const URL = process.env.URL_FETCH;
+
 
 function FilteredEventsPage(props) {
   const [loadedEvents, setLoadedEvents] = useState();
@@ -14,9 +16,7 @@ function FilteredEventsPage(props) {
 
   const filterData = router.query.slug;
 
-  const { data, error } = useSWR(
-    'https://nextjs-course-c81cc-default-rtdb.firebaseio.com/events.json',
-    (url) => fetch(url).then(res => res.json())
+  const { data, error } = useSWR(URL, (url) => fetch(url).then(res => res.json())
   );
 
   useEffect(() => {
@@ -54,14 +54,14 @@ function FilteredEventsPage(props) {
     error
   ) {
     return (
-      <Fragment>
+      <>
         <ErrorAlert>
           <p>Invalid filter. Please adjust your values!</p>
         </ErrorAlert>
         <div className='center'>
           <Button link='/events'>Show All Events</Button>
         </div>
-      </Fragment>
+      </>
     );
   }
 
@@ -75,24 +75,24 @@ function FilteredEventsPage(props) {
 
   if (!filteredEvents || filteredEvents.length === 0) {
     return (
-      <Fragment>
+      <>
         <ErrorAlert>
           <p>No events found for the chosen filter!</p>
         </ErrorAlert>
         <div className='center'>
           <Button link='/events'>Show All Events</Button>
         </div>
-      </Fragment>
+      </>
     );
   }
 
   const date = new Date(numYear, numMonth - 1);
 
   return (
-    <Fragment>
+    <>
       <ResultsTitle date={date} />
       <EventList items={filteredEvents} />
-    </Fragment>
+    </>
   );
 }
 
