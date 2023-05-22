@@ -9,7 +9,6 @@ const HomePage = (props) => {
 }
 
 export const getStaticProps = async () => {
-  console.log('Se llama ')
   const data = await getFeaturedEvents();
 
   if (!data) {
@@ -24,7 +23,7 @@ export const getStaticProps = async () => {
     props: {
       events: data
     },
-    revalidate: 10, // revalidate and update at 10 seconds
+    revalidate: 1800, // half hour, revalidate and update 
     // notFound: true,  // if the code to fails data is failing the return not found page.
     // redirect : {} // redirects to another page.
   };
