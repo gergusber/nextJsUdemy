@@ -2,15 +2,15 @@ import { getEventById, getFeaturedEvents } from '../../helpers/api-utils';
 import EventSummary from '../../components/event-detail/event-summary';
 import EventLogistics from '../../components/event-detail/event-logistics';
 import EventContent from '../../components/event-detail/event-content';
-import ErrorAlert from '../../components/layout/error-alert/error-alert';
 import Button from '../../components/layout/button/button';
+import Head from 'next/head'
 
 const EventDetailPage = (props) => {
   const { event = null } = props;
 
   if (!event) {
     return <>
-      <div  className='center'>
+      <div className='center'>
         <p> Loading...</p>
       </div >
       <div className='center'>
@@ -20,6 +20,10 @@ const EventDetailPage = (props) => {
   }
 
   return <>
+    <Head>
+      <title>{event.title} </title>
+      <meta name='description' content='Find a lot of great events that allows u to evolve...' />
+    </Head>
     <EventSummary title={event.title} />
     <EventLogistics
       date={event.date}
@@ -52,7 +56,7 @@ export const getStaticProps = async (context) => {
     props: {
       event
     },
-    revalidate: 30, 
+    revalidate: 30,
   }
 }
 

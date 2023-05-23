@@ -6,6 +6,7 @@ import EventList from '../../components/events/event-list'
 import ResultsTitle from '../../components/events/results-title/results-title';
 import Button from '../../components/layout/button/button';
 import ErrorAlert from '../../components/layout/error-alert/error-alert';
+import Head from 'next/head'
 
 const URL = process.env.URL_FETCH;
 
@@ -18,6 +19,16 @@ function FilteredEventsPage(props) {
 
   const { data, error } = useSWR(URL, (url) => fetch(url).then(res => res.json())
   );
+
+  if (!loadedEvents) {
+    return <p className='center'>Loading...</p>;
+  }
+  const filteredYear = filterData[0];
+  const filteredMonth = filterData[1];
+
+  const numYear = +filteredYear;
+  const numMonth = +filteredMonth;
+
 
   useEffect(() => {
     if (data) {
@@ -34,15 +45,12 @@ function FilteredEventsPage(props) {
     }
   }, [data]);
 
-  if (!loadedEvents) {
-    return <p className='center'>Loading...</p>;
-  }
+  const pageHeadData = <Head>
+    <title> Filter events </title>
+    <meta name='description' content={`All events for the: date: ${date} `} />
+  </Head>
 
-  const filteredYear = filterData[0];
-  const filteredMonth = filterData[1];
 
-  const numYear = +filteredYear;
-  const numMonth = +filteredMonth;
 
   if (
     isNaN(numYear) ||
@@ -76,6 +84,7 @@ function FilteredEventsPage(props) {
   if (!filteredEvents || filteredEvents.length === 0) {
     return (
       <>
+        {pageHeadData}
         <ErrorAlert>
           <p>No events found for the chosen filter!</p>
         </ErrorAlert>
@@ -90,12 +99,13 @@ function FilteredEventsPage(props) {
 
   return (
     <>
+      {pageHeadData}
       <ResultsTitle date={date} />
       <EventList items={filteredEvents} />
     </>
   );
 }
-
+51
 // export async function getServerSideProps(context) {
 //   const { params } = context;
 
