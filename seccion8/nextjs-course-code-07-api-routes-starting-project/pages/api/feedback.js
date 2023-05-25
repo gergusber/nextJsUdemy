@@ -1,6 +1,14 @@
 import fs from 'fs'
 import path from 'path';
 
+
+const buildPath = () => path.join(process.cwd(), 'data', 'feedback.json')
+
+const getFileData = (filePath) => {
+  const fileData = fs.readFileSync(filePath)
+  return JSON.parse(fileData);
+}
+
 function handler(req, res) {
   if (req.method === 'POST') {
     const { email, text: feedback } = req.body;
@@ -10,10 +18,9 @@ function handler(req, res) {
       email,
       feedback
     }
-    const filePath = path.join(process.cwd(), 'data', 'feedback.json')
-    const fileData = fs.readFileSync(filePath)
 
-    const data = JSON.parse(fileData);
+    const filePath = buildPath();
+    const data = getFileData(filePath);
 
     data.push(newFeedback)
 
@@ -22,7 +29,10 @@ function handler(req, res) {
     res.status(201).json({ message: 'Success', feedback: newFeedback })
   }
   else {
-    res.status(200).json({ message: 'Hello World' })
+    const filePath = buildPath();
+    const data = getFileData(filePath);
+
+    res.status(200).json({ feedbacks: data })
   }
 }
 
