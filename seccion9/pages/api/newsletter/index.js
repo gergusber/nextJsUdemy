@@ -1,7 +1,5 @@
-const { MongoClient } = require("mongodb");
-const MONGODB_USER = process.env.MONGODB_USER;
-const MONGODB_PASSWORD = process.env.MONGODB_PASSWORD;
-const MONGODB_DB = process.env.MONGODB_DB;
+
+import { connectToDb, insertDocument, findAllDocuments } from "../../../helpers/db-util";
 
 
 const handler = async (req, res) => {
@@ -11,18 +9,25 @@ const handler = async (req, res) => {
       res.status(422).json({ message: 'Bad request' });
       return;
     }
+    let client = null
+    try {
+      client = await connectToDb();
+    } catch (error) {
+      res.status(500).json({ message: 'Error to connect to the db' });
+      return;
+    }
 
-    console.log('Email in the api : ', email);
-    const client = await MongoClient.connect(`mongodb+srv://${MONGODB_USER}:${MONGODB_PASSWORD}@clusterfrance.4ryh4fh.mongodb.net/${MONGODB_DB}?retryWrites=true&w=majority`); // creates the client 
+    try {
+      const insertedDocument = await insertDocument(client, 'newsletter', { email: email })
+      console.log(`${insertedDocument.insertedCount} documents were inserted with the _id: ${insertedDocument.insertedId}`);
 
-    const db = client.db();
-
-    const result = await db.collection('newsletter').insertOne({ email: email }) // inserts an email to the emails collections,.
-
-    console.log(`${result.insertedCount} documents were inserted with the _id: ${result.insertedId}`);
-
-    res.status(201).json({ message: 'sign up successfully ' })
-    await client.close();
+      res.status(201).json({ message: 'sign up successfully ' })
+    } catch (error) {
+      res.status(500).json({ message: 'inserting data failed' })
+    }
+    finally {
+      await client.close();
+    }
   }
   else {
 
