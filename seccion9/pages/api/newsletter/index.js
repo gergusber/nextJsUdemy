@@ -25,9 +25,6 @@ const handler = async (req, res) => {
     } catch (error) {
       res.status(500).json({ message: 'inserting data failed' })
     }
-    finally {
-      await client.close();
-    }
   }
   else {
 

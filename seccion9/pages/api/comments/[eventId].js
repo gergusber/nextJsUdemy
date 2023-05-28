@@ -51,9 +51,6 @@ const handler = async (req, res) => {
     } catch (error) {
       res.status(500).json({ message: 'inserting data failed' })
     }
-    finally {
-      await client.close();
-    }
   }
 
 
@@ -63,9 +60,6 @@ const handler = async (req, res) => {
       res.status(200).json({ comments: result })
     } catch (error) {
       res.status(500).json({ message: 'Fetching data failed' })
-    }
-    finally {
-      await client.close();
     }
   }
 
