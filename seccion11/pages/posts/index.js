@@ -1,4 +1,4 @@
-import FeaturedPosts from "../../components/HomeComponents/FeaturedPosts/featured-posts"
+import AllPosts from "../../components/posts/all-posts/all-posts";
 
 const Posts = () => {
   const featuredPosts = [
@@ -31,7 +31,7 @@ const Posts = () => {
       date: '2022-01-02'
     }
   ];
-  return <FeaturedPosts posts={featuredPosts} />
+  return <AllPosts posts={featuredPosts} />
 }
 
 export default Posts
