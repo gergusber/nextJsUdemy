@@ -10,7 +10,7 @@ const PostItem = (props) => {
     month: 'long',
     year: 'numeric'
   })
-  const imagePath = `/images/posts/${image}`
+  const imagePath = `/images/posts/${slug}/${image}`
 
 
   return (

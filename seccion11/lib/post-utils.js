@@ -28,7 +28,7 @@ export const getAllPosts = () => {
 
 export const getFeaturedPosts = () => {
   const allPosts = getAllPosts();
-  console.log(allPosts);
+  
   return allPosts.filter(post => post.isFeatured);
 }
 

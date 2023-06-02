@@ -2,7 +2,7 @@
 title: 'Getting started with nextjs'
 date: '2022-10-15'
 author: 'german'
-image: 'getting-started-nextjs.png'
+image: 'getting-started-with-next.png'
 excerpt: 'something for this post2'
 isFeatured: true
 ---

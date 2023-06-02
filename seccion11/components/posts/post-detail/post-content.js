@@ -154,7 +154,7 @@ const DUMMY_POST = {
 const PostContent = (props) => {
   const { post } = props
   const { title, content, image, slug } = post
-  const imagePath = `/images/posts/${image}`
+  const imagePath = `/images/posts/${slug}/${image}`
   return (
     <article className={classes.content}>
       <PostHeader title={title} image={imagePath} />
