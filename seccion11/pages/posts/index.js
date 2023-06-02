@@ -1,37 +1,18 @@
 import AllPosts from "../../components/posts/all-posts/all-posts";
+import { getAllPosts } from "../../lib/post-utils";
 
-const Posts = () => {
-  const featuredPosts = [
-    {
-      title: 'React patterns',
-      excerpt: 'something for this post',
-      image: 'getting-started-nextjs.png',
-      slug: 'react-patterns1',
-      date: '2022-01-01'
+const Posts = (props) => {
+  return <AllPosts posts={props.posts} />
+}
+
+export const getStaticProps = async () => {
+  const allPosts = getAllPosts();
+  return {
+    props: {
+      posts: allPosts
     },
-    {
-      title: 'React patterns2 ',
-      excerpt: 'something for this post2',
-      image: 'getting-started-nextjs.png',
-      slug: 'react-patterns2',
-      date: '2022-01-0'
-    },
-    {
-      title: 'React patterns3',
-      excerpt: 'something for this post',
-      image: 'getting-started-nextjs.png',
-      slug: 'react-patterns3',
-      date: '2022-01-01'
-    },
-    {
-      title: 'React patterns4',
-      excerpt: 'something for this post2',
-      image: 'getting-started-nextjs.png',
-      slug: 'react-patterns4',
-      date: '2022-01-02'
-    }
-  ];
-  return <AllPosts posts={featuredPosts} />
+    revalidate: 100
+  }
 }
 
 export default Posts
