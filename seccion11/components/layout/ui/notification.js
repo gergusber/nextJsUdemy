@@ -17,12 +17,10 @@ function Notification(props) {
 
   const cssClasses = `${classes.notification} ${statusClasses}`;
 
-  return (
-    <div className={cssClasses}>
-      <h2>{title}</h2>
-      <p>{message}</p>
-    </div>
-  );
+  return ReactDOM.createPortal( (<div className={cssClasses}>
+    <h2>{title}</h2>
+    <p>{message}</p>
+  </div>),document.getElementById('notifications'));
 }
 
 export default Notification;
