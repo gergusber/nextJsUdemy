@@ -51,6 +51,10 @@ const ContactForm = (props) => {
       });
       setRequestStatus('success');
 
+      setEnteredName('');
+      setEnteredEmail('');
+      setEnteredMessage('');
+
     } catch (error) {
       setRequestStatus('error');
     }
