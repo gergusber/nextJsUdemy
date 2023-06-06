@@ -1,6 +1,6 @@
 
 import { connectToDb, insertDocument,findDocument } from "../../../helpers/db-util";
-import { hashPassword } from '../../../helpers/auth'
+import { hashedPassword } from '../../../helpers/auth'
 const handler = async (req, res) => {
 
   if (req.method !== 'POST')
@@ -27,11 +27,11 @@ const handler = async (req, res) => {
       return;
     }
 
-    const hashedPassword = await hashPassword(password);
+    const passwordHashed = await hashedPassword(password);
 
     const user = {
       email,
-      password: hashedPassword,
+      password: passwordHashed,
     };
 
     const insertedDocument = await insertDocument(client, "users", user);
