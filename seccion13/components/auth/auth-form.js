@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import classes from './auth-form.module.css';
+import { signIn } from 'next-auth/client'
 
 function AuthForm() {
   const [isLogin, setIsLogin] = useState(true);
@@ -26,7 +27,6 @@ function AuthForm() {
       throw new Error(data.message || 'Something went wrong!');
     }
     return data;
-
   }
 
   const submitHandler = async (event) => {
@@ -40,6 +40,16 @@ function AuthForm() {
 
     if (isLogin) {
       // setIsLogin(false);
+      const result = await signIn('credentials', {
+        redirect: false,
+        email,
+        password
+      })
+      console.log('result',result);
+      if(!result.error){
+        // set auth state.
+
+      }
     }
     else {
       try {
