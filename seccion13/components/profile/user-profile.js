@@ -22,9 +22,9 @@ function UserProfile() {
   //   )
   // })
 
-  if (isLoading) {
-    return <p className={classes.profile}>Loading..</p>
-  }
+  // if (isLoading) {
+  //   return <p className={classes.profile}>Loading..</p>
+  // }
   return (
     <section className={classes.profile}>
       <h1>Your User Profile</h1>
