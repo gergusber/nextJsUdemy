@@ -28,3 +28,14 @@ export const findDocument = async (client, collection, filter) => {
   const db = client.db();
   return await db.collection(collection).findOne(filter);
 }
+
+
+export const updateDocument = async (client, collection, filter, document) => {
+  const db = client.db();
+
+  const result = await db.collection(collection).updateOne(filter, { $set: document });
+
+  console.log(`${result.insertedCount} documents were updated with the _id: ${result.insertedId}`);
+
+  return result;
+}
